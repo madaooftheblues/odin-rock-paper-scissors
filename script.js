@@ -10,6 +10,7 @@ function playRound(playerSelection, computerSelection) {
 
   //Case insensitivity for player's choice by converting the string to lowercase
   playerSelection = playerSelection.toLowerCase();
+  if (!["rock", "paper", "scissors"].includes(playerSelection)) return -2;
   //Capitalizing the first letter of player's choice string
   playerSelection =
     playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
@@ -30,19 +31,25 @@ function playRound(playerSelection, computerSelection) {
 
 function game() {
   let count = 0;
+  let i = 0;
 
-  for (let i = 0; i < 5; i++) {
-    let player = prompt("Input Choice (Rock, Paper, Scissors");
+  while (i < 5) {
+    let player = prompt("Input Choice (Rock, Paper, Scissors)");
     let computer = getComputerChoice();
 
-    let result = 0;
-    if ((result = playRound(player, computer))) {
+    let result = playRound(player, computer);
+    if (result == 1) {
       count++;
+      i++;
       console.log(`You Win! ${player} beats ${computer}`);
     } else if (result == 0) {
+      i++;
       console.log(`You Lose! ${computer} beats ${player}`);
-    } else {
+    } else if (result == -1) {
+      i++;
       console.log(`Tied! ${player} ties ${computer}`);
+    } else if (result == -2) {
+      console.log("Invalid Input!");
     }
   }
   if (count > 2) console.log("You won the overall match!");
