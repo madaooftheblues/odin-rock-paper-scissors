@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.label {
+  font-size: xx-large;
+  height: 100px;
+}
+
+.prompt {
+  font-size: large;
+  height: 100px;
+}
+
+.label,
+.prompt {
+  text-align: center;
+  color: darkred;
+  padding-top: 40px;
+}
+.btn-container {
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  gap: 50px;
+  padding: 0 300px;
+}
+
+.button {
+  flex: 0 0 200px;
+  color: darkred;
+  font-size: xx-large;
+  border-radius: 40px;
+  border: 0;
+  transition: all 0.5s linear;
+}
+
+.transform {
+  transform: scale(1.2);
+  transition: all 0.5s linear;
+  border: 4px solid darkred;
+}
+
+.click {
+  border-color: gold;
+  color: gold;
+}
+
+.points-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+}

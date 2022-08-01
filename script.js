@@ -1,5 +1,18 @@
 //We initialize three choices in an array (Rock, Paper, Scissors)
 let choices = ["Rock", "Paper", "Scissors"];
+const label = document.querySelector(".label");
+const prompt = document.querySelector(".prompt");
+const playerDiv = document.querySelector(".player-points");
+const computerDiv = document.querySelector(".computer-points");
+const roundDiv = document.querySelector(".round");
+
+let playerPoints = (computerPoints = 0);
+let round = 1;
+
+label.textContent = "Choose!";
+playerDiv.textContent = `You: ${playerPoints}`;
+computerDiv.textContent = `Computer: ${computerPoints}`;
+roundDiv.textContent = `Round ${round}`;
 
 //We fetch the computer's choice by generating a random number that corresponds to the index of choices array
 function getComputerChoice() {
@@ -11,14 +24,7 @@ function capitalize(string) {
 }
 
 function playRound(playerSelection, computerSelection) {
-  //Case insensitivity for player's choice by converting the string to lowercase
-  playerSelection = playerSelection.toLowerCase();
-  //Capitalizing the first letter of player's choice string
-  playerSelection = capitalize(playerSelection);
-
-  if (!choices.includes(playerSelection)) return -2;
-
-  console.log(`Player: ${playerSelection}, Computer: ${computerSelection}`);
+  prompt.textContent = `You: ${playerSelection}, Computer: ${computerSelection}`;
   if (computerSelection == playerSelection) return -1;
   else if (computerSelection == "Rock") {
     if (playerSelection == "Scissors") return 0;
@@ -32,31 +38,65 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-function game() {
-  let count = 0;
-  let i = 0;
-
-  while (i < 5) {
-    console.log(`Round ${i} of 5`);
-    let player = prompt("Input Choice (Rock, Paper, Scissors)");
-    let computer = getComputerChoice();
-    let result = playRound(player, computer);
-    if (result == 1) {
-      count++;
-      i++;
-      console.log(`You Win! ${capitalize(player)} beats ${computer}`);
-    } else if (result == 0) {
-      i++;
-      console.log(`You Lose! ${computer} beats ${capitalize(player)}`);
-    } else if (result == -1) {
-      i++;
-      console.log(`Tied! ${capitalize(player)} ties ${computer}`);
-    } else if (result == -2) {
-      console.log("Invalid Input!");
-    }
+function game(player) {
+  let computer = getComputerChoice();
+  computer = getComputerChoice();
+  let result = playRound(player, computer);
+  if (result == 1) {
+    label.textContent = `You Win! ${player} beats ${computer}`;
+    playerPoints++;
+  } else if (result == 0) {
+    label.textContent = `You Lose! ${computer} beats ${player}`;
+    computerPoints++;
+  } else if (result == -1) {
+    label.textContent = `Tied! ${player} ties ${computer}`;
+    playerPoints++;
+    computerPoints++;
   }
-  if (count > 2) console.log("You Won The Match!");
-  else console.log("You Lost The Match!");
+
+  round++;
+
+  playerDiv.textContent = `You: ${playerPoints}`;
+  computerDiv.textContent = `Computer: ${computerPoints}`;
+  roundDiv.textContent = `Round ${round}`;
+
+  if (round > 5) {
+    if (playerPoints > computerPoints) label.textContent = "You Won The Match!";
+    else if (playerPoints < computerPoints)
+      label.textContent = "Computer Won The Match!";
+    else label.textContent = "Match Tied!";
+
+    const replay = document.createElement("button");
+    replay.id = "replay";
+    replay.classList.add("button");
+    replay.textContent = "Replay?";
+    replay.addEventListener("click", (e) => location.reload());
+    replay.addEventListener("mouseover", add);
+    replay.addEventListener("mouseout", remove);
+    const btnContainer = document.querySelector(".btn-container");
+    btnContainer.textContent = "";
+    btnContainer.appendChild(replay);
+    prompt.textContent = "";
+    roundDiv.textContent = "Match Finished.";
+  }
 }
 
-game();
+function remove(e) {
+  e.target.classList.remove("transform");
+}
+function add(e) {
+  e.target.classList.add("transform");
+}
+
+const buttons = document.querySelectorAll(".button");
+buttons.forEach((button) => {
+  button.addEventListener("mouseover", add);
+  button.addEventListener("mouseout", remove);
+  button.addEventListener("click", (e) => {
+    e.target.classList.add("click");
+    game(e.target.id);
+  });
+  button.addEventListener("transitionend", (e) =>
+    e.target.classList.remove("click")
+  );
+});
