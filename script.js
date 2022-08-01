@@ -1,19 +1,22 @@
+//We initialize three choices in an array (Rock, Paper, Scissors)
+let choices = ["Rock", "Paper", "Scissors"];
+
 //We fetch the computer's choice by generating a random number that corresponds to the index of choices array
 function getComputerChoice() {
-  //We initialize three choices in an array (Rock, Paper, Scissors)
-  let choices = ["Rock", "Paper", "Scissors"];
   return choices[Math.floor(Math.random() * choices.length)];
 }
 
-function playRound(playerSelection, computerSelection) {
-  //Input validation is ignored here
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
+function playRound(playerSelection, computerSelection) {
   //Case insensitivity for player's choice by converting the string to lowercase
   playerSelection = playerSelection.toLowerCase();
-  if (!["rock", "paper", "scissors"].includes(playerSelection)) return -2;
   //Capitalizing the first letter of player's choice string
-  playerSelection =
-    playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1);
+  playerSelection = capitalize(playerSelection);
+
+  if (!choices.includes(playerSelection)) return -2;
 
   console.log(`Player: ${playerSelection}, Computer: ${computerSelection}`);
   if (computerSelection == playerSelection) return -1;
@@ -34,26 +37,26 @@ function game() {
   let i = 0;
 
   while (i < 5) {
+    console.log(`Round ${i} of 5`);
     let player = prompt("Input Choice (Rock, Paper, Scissors)");
     let computer = getComputerChoice();
-
     let result = playRound(player, computer);
     if (result == 1) {
       count++;
       i++;
-      console.log(`You Win! ${player} beats ${computer}`);
+      console.log(`You Win! ${capitalize(player)} beats ${computer}`);
     } else if (result == 0) {
       i++;
-      console.log(`You Lose! ${computer} beats ${player}`);
+      console.log(`You Lose! ${computer} beats ${capitalize(player)}`);
     } else if (result == -1) {
       i++;
-      console.log(`Tied! ${player} ties ${computer}`);
+      console.log(`Tied! ${capitalize(player)} ties ${computer}`);
     } else if (result == -2) {
       console.log("Invalid Input!");
     }
   }
-  if (count > 2) console.log("You won the overall match!");
-  else console.log("You lost the match!");
+  if (count > 2) console.log("You Won The Match!");
+  else console.log("You Lost The Match!");
 }
 
 game();
